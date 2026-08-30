@@ -1,6 +1,8 @@
 {
   "name": "rise-network-website",
+  "main": "worker.js",
   "compatibility_date": "2026-08-30",
+
   "d1_databases": [
     {
       "binding": "DB",
