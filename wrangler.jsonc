@@ -1,1 +1,11 @@
-
+{
+  "name": "rise-network-website",
+  "compatibility_date": "2026-08-30",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rise-network-db",
+      "database_id": "b18f4334-c135-47b7-ba88-9f94bc67776d"
+    }
+  ]
+}
