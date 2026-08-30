@@ -2,22 +2,12 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Home
-    if (url.pathname === "/") {
-      return new Response("RISE NETWORK API is running!", {
-        headers: { "Content-Type": "text/plain" }
-      });
-    }
-
-    // Admin API - get all players
+    // API: Get players
     if (url.pathname === "/api/admin/players" && request.method === "GET") {
       const auth = request.headers.get("Authorization");
 
       if (!auth || auth !== `Bearer ${env.ADMIN_PASSWORD}`) {
-        return Response.json(
-          { error: "Unauthorized" },
-          { status: 401 }
-        );
+        return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
       const result = await env.DB
@@ -27,15 +17,12 @@ export default {
       return Response.json(result.results);
     }
 
-    // Add player
+    // API: Add player
     if (url.pathname === "/api/admin/players" && request.method === "POST") {
       const auth = request.headers.get("Authorization");
 
       if (!auth || auth !== `Bearer ${env.ADMIN_PASSWORD}`) {
-        return Response.json(
-          { error: "Unauthorized" },
-          { status: 401 }
-        );
+        return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
       const data = await request.json();
@@ -64,15 +51,15 @@ export default {
       });
     }
 
-    // Delete player
-    if (url.pathname.startsWith("/api/admin/players/") && request.method === "DELETE") {
+    // API: Delete player
+    if (
+      url.pathname.startsWith("/api/admin/players/") &&
+      request.method === "DELETE"
+    ) {
       const auth = request.headers.get("Authorization");
 
       if (!auth || auth !== `Bearer ${env.ADMIN_PASSWORD}`) {
-        return Response.json(
-          { error: "Unauthorized" },
-          { status: 401 }
-        );
+        return Response.json({ error: "Unauthorized" }, { status: 401 });
       }
 
       const id = url.pathname.split("/").pop();
@@ -88,9 +75,11 @@ export default {
       });
     }
 
-    return Response.json(
-      { error: "Not found" },
-      { status: 404 }
-    );
+    // Serve index.html / admin.html and other files
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
+    }
+
+    return new Response("Not Found", { status: 404 });
   }
 };
