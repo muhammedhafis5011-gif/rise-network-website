@@ -2,7 +2,9 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // =========================
     // ADMIN LOGIN
+    // =========================
     if (
       url.pathname === "/api/admin/login" &&
       request.method === "POST"
@@ -19,36 +21,38 @@ export default {
       );
     }
 
-    // Check admin authentication
+    // =========================
+    // ADMIN AUTH CHECK
+    // =========================
     function isAdmin(request) {
       const auth = request.headers.get("Authorization");
+
       return auth === `Bearer ${env.ADMIN_PASSWORD}`;
     }
 
-    // GET PLAYERS
+    // =========================
+    // GET ANNOUNCEMENTS
+    // =========================
     if (
-      url.pathname === "/api/admin/players" &&
+      url.pathname === "/api/announcements" &&
       request.method === "GET"
     ) {
-      if (!isAdmin(request)) {
-        return Response.json(
-          { error: "Unauthorized" },
-          { status: 401 }
-        );
-      }
-
       const result = await env.DB
-        .prepare(
-          "SELECT * FROM players ORDER BY points DESC"
-        )
+        .prepare(`
+          SELECT *
+          FROM announcements
+          ORDER BY id DESC
+        `)
         .all();
 
       return Response.json(result.results);
     }
 
-    // ADD PLAYER
+    // =========================
+    // ADD ANNOUNCEMENT
+    // =========================
     if (
-      url.pathname === "/api/admin/players" &&
+      url.pathname === "/api/admin/announcements" &&
       request.method === "POST"
     ) {
       if (!isAdmin(request)) {
@@ -60,21 +64,22 @@ export default {
 
       const data = await request.json();
 
-      if (!data.name) {
+      if (!data.title || !data.message) {
         return Response.json(
-          { error: "Player name required" },
+          { error: "Title and message are required" },
           { status: 400 }
         );
       }
 
       await env.DB
-        .prepare(
-          "INSERT INTO players (name, points, wins) VALUES (?, ?, ?)"
-        )
+        .prepare(`
+          INSERT INTO announcements
+          (title, message)
+          VALUES (?, ?)
+        `)
         .bind(
-          data.name,
-          Number(data.points || 0),
-          Number(data.wins || 0)
+          data.title,
+          data.message
         )
         .run();
 
@@ -83,9 +88,13 @@ export default {
       });
     }
 
-    // DELETE PLAYER
+    // =========================
+    // DELETE ANNOUNCEMENT
+    // =========================
     if (
-      url.pathname.startsWith("/api/admin/players/") &&
+      url.pathname.startsWith(
+        "/api/admin/announcements/"
+      ) &&
       request.method === "DELETE"
     ) {
       if (!isAdmin(request)) {
@@ -95,12 +104,14 @@ export default {
         );
       }
 
-      const id = url.pathname.split("/").pop();
+      const id =
+        url.pathname.split("/").pop();
 
       await env.DB
-        .prepare(
-          "DELETE FROM players WHERE id = ?"
-        )
+        .prepare(`
+          DELETE FROM announcements
+          WHERE id = ?
+        `)
         .bind(id)
         .run();
 
@@ -109,12 +120,16 @@ export default {
       });
     }
 
+    // =========================
     // ADMIN PAGE
+    // =========================
     if (url.pathname === "/admin.html") {
       return env.ASSETS.fetch(request);
     }
 
+    // =========================
     // WEBSITE
+    // =========================
     return env.ASSETS.fetch(request);
   }
 };
