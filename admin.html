@@ -1,238 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>RISE NETWORK — Admin</title>
+<title>RISE NETWORK | Admin</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      min-height: 100vh;
-      background: #080b14;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at top, #263477, #090d18 55%);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 
-    .card {
-      width: 100%;
-      max-width: 420px;
-      background: #111827;
-      border: 1px solid #29334a;
-      border-radius: 22px;
-      padding: 30px;
-      box-shadow: 0 20px 60px #0008;
-    }
+.card {
+  width: 100%;
+  max-width: 430px;
+  background: rgba(17, 24, 39, .96);
+  border: 1px solid #303b58;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 25px 70px #0009;
+}
 
-    .logo {
-      width: 70px;
-      height: 70px;
-      margin: 0 auto 20px;
-      border-radius: 18px;
-      background: #5865f2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      font-weight: 900;
-    }
+.logo {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  border-radius: 20px;
+  background: linear-gradient(135deg,#5865f2,#7c5cff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-weight: 900;
+}
 
-    h1 {
-      text-align: center;
-      font-size: 28px;
-    }
+h1 {
+  text-align: center;
+  margin: 0;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #9ca3af;
-      margin-top: 8px;
-      margin-bottom: 30px;
-    }
+.subtitle {
+  text-align: center;
+  color: #9299b5;
+  margin: 8px 0 30px;
+}
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #d1d5db;
-      font-size: 14px;
-    }
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #cbd5e1;
+}
 
-    input {
-      width: 100%;
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid #374151;
-      background: #080b14;
-      color: white;
-      font-size: 16px;
-      outline: none;
-    }
+input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  background: #080b14;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
 
-    input:focus {
-      border-color: #5865f2;
-    }
+input:focus {
+  border-color: #5865f2;
+}
 
-    .login {
-      width: 100%;
-      padding: 15px;
-      margin-top: 18px;
-      border: 0;
-      border-radius: 12px;
-      background: #5865f2;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 15px;
+  border: 0;
+  border-radius: 12px;
+  background: #5865f2;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    .login:disabled {
-      opacity: 0.6;
-    }
+button:disabled {
+  opacity: .6;
+}
 
-    #status {
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 14px;
-      display: none;
-    }
+#message {
+  margin-top: 15px;
+  text-align: center;
+  color: #ff7b7b;
+}
 
-    .dashboard {
-      display: none;
-    }
+.dashboard {
+  display: none;
+}
 
-    .item {
-      background: #080b14;
-      border: 1px solid #29334a;
-      border-radius: 13px;
-      padding: 18px;
-      margin-top: 12px;
-    }
+.box {
+  background: #090d18;
+  border: 1px solid #29334a;
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 12px;
+}
 
-    .item span {
-      color: #9ca3af;
-      font-size: 14px;
-    }
+.box span {
+  color: #9ca3af;
+  font-size: 14px;
+}
 
-    .logout {
-      width: 100%;
-      margin-top: 20px;
-      padding: 14px;
-      border: 1px solid #374151;
-      border-radius: 12px;
-      background: transparent;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
+.logout {
+  background: #ef4444;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- LOGIN -->
-  <div class="card" id="loginCard">
+<!-- LOGIN -->
 
-    <div class="logo">R</div>
+<div class="card" id="loginCard">
 
-    <h1>RISE NETWORK</h1>
+  <div class="logo">R</div>
 
-    <p class="subtitle">
-      Secure Admin Panel
-    </p>
+  <h1>RISE NETWORK</h1>
 
-    <label for="password">
-      Admin Password
-    </label>
-
-    <input
-      id="password"
-      type="password"
-      placeholder="Enter password"
-    >
-
-    <button
-      class="login"
-      id="loginButton"
-      onclick="login()"
-    >
-      LOGIN
-    </button>
-
-    <div id="status"></div>
-
+  <div class="subtitle">
+    Secure Admin Panel
   </div>
 
+  <label>Admin Password</label>
 
-  <!-- DASHBOARD -->
-  <div class="card dashboard" id="dashboard">
+  <input
+    id="password"
+    type="password"
+    placeholder="Enter password"
+  >
 
-    <div class="logo">R</div>
+  <button id="loginButton" onclick="login()">
+    LOGIN
+  </button>
 
-    <h1>Admin Dashboard</h1>
+  <div id="message"></div>
 
-    <p class="subtitle">
-      Welcome to RISE NETWORK
-    </p>
+</div>
 
-    <div class="item">
-      <strong>🟢 Login Status</strong>
-      <br>
-      <span>Successfully authenticated</span>
-    </div>
 
-    <div class="item">
-      <strong>🌐 Website</strong>
-      <br>
-      <span>RISE NETWORK is online</span>
-    </div>
+<!-- DASHBOARD -->
 
-    <div class="item">
-      <strong>🗄️ Database</strong>
-      <br>
-      <span>Cloudflare D1 connected</span>
-    </div>
+<div class="card dashboard" id="dashboard">
 
-    <button
-      class="logout"
-      onclick="logout()"
-    >
-      LOGOUT
-    </button>
+  <div class="logo">R</div>
 
+  <h1>Admin Dashboard</h1>
+
+  <div class="subtitle">
+    Welcome to RISE NETWORK
   </div>
+
+  <div class="box">
+    <strong>🟢 System</strong><br>
+    <span>Admin authentication successful.</span>
+  </div>
+
+  <div class="box">
+    <strong>🌐 Website</strong><br>
+    <span>RISE NETWORK is online.</span>
+  </div>
+
+  <div class="box">
+    <strong>🗄️ Database</strong><br>
+    <span>D1 database is connected.</span>
+  </div>
+
+  <button class="logout" onclick="logout()">
+    LOGOUT
+  </button>
+
+</div>
 
 
 <script>
 
 async function login() {
 
-  const passwordInput =
-    document.getElementById("password");
+  const password =
+    document.getElementById("password").value;
 
   const button =
     document.getElementById("loginButton");
 
-  const status =
-    document.getElementById("status");
+  const message =
+    document.getElementById("message");
 
-  const password =
-    passwordInput.value;
+  message.textContent = "";
 
   if (!password) {
-    status.style.display = "block";
-    status.style.background = "#3b1f24";
-    status.style.color = "#ff8b8b";
-    status.textContent = "Enter your password.";
+    message.textContent = "Enter your password.";
     return;
   }
 
@@ -251,45 +225,31 @@ async function login() {
         },
 
         body: JSON.stringify({
-          password: "Rise89"
+          password: password
         })
       }
     );
 
     const data = await response.json();
 
-    /*
-      TEMPORARY DEBUG
+    if (data.success) {
 
-      This will show us exactly what
-      the Worker is returning.
-    */
+      document.getElementById("loginCard")
+        .style.display = "none";
 
-    alert(JSON.stringify(data));
-
-    if (data.secretFound === true) {
-
-      status.style.display = "block";
-      status.style.background = "#123322";
-      status.style.color = "#72e6a0";
-      status.textContent =
-        "Worker can see ADMIN_PASSWORD.";
+      document.getElementById("dashboard")
+        .style.display = "block";
 
     } else {
 
-      status.style.display = "block";
-      status.style.background = "#3b1f24";
-      status.style.color = "#ff8b8b";
-      status.textContent =
-        "Worker cannot see ADMIN_PASSWORD.";
+      message.textContent = "Wrong password.";
 
     }
 
   } catch (error) {
 
-    alert(
-      "ERROR: " + error.message
-    );
+    message.textContent =
+      "Connection error. Try again.";
 
   }
 
@@ -305,6 +265,8 @@ function logout() {
 
   document.getElementById("loginCard")
     .style.display = "block";
+
+  document.getElementById("password").value = "";
 
 }
 
