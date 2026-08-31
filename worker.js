@@ -2,20 +2,41 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // TEMPORARY ADMIN SECRET TEST
+    // ADMIN LOGIN
     if (
       url.pathname === "/api/admin/login" &&
       request.method === "POST"
     ) {
-      return Response.json({
-        secretFound: !!env.ADMIN_PASSWORD,
-        secretLength: env.ADMIN_PASSWORD
-          ? env.ADMIN_PASSWORD.length
-          : 0
-      });
+      try {
+        const body = await request.json();
+
+        if (body.password !== env.ADMIN_PASSWORD) {
+          return Response.json(
+            {
+              success: false,
+              message: "Wrong password"
+            },
+            { status: 401 }
+          );
+        }
+
+        return Response.json({
+          success: true,
+          message: "Login successful"
+        });
+
+      } catch (error) {
+        return Response.json(
+          {
+            success: false,
+            message: "Invalid request"
+          },
+          { status: 400 }
+        );
+      }
     }
 
-    // Serve admin.html
+    // ADMIN PAGE
     if (url.pathname === "/admin.html") {
       return env.ASSETS.fetch(
         new Request(
@@ -24,7 +45,7 @@ export default {
       );
     }
 
-    // Serve the website
+    // WEBSITE
     return env.ASSETS.fetch(request);
   }
 };
