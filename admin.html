@@ -1,176 +1,392 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RISE NETWORK | Admin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RISE NETWORK — Admin</title>
 
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#080b14;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px
-}
-.box{
-  width:100%;
-  max-width:420px;
-  background:#111827;
-  border:1px solid #273449;
-  border-radius:18px;
-  padding:28px;
-  box-shadow:0 20px 60px #0008
-}
-h1{text-align:center;margin:0 0 6px}
-p{text-align:center;color:#9ca3af}
-input{
-  width:100%;
-  padding:14px;
-  margin-top:15px;
-  border:1px solid #374151;
-  border-radius:10px;
-  background:#080b14;
-  color:white;
-  font-size:16px
-}
-button{
-  width:100%;
-  padding:14px;
-  margin-top:15px;
-  border:0;
-  border-radius:10px;
-  background:#5865f2;
-  color:white;
-  font-weight:bold;
-  font-size:16px;
-  cursor:pointer
-}
-#msg{
-  margin-top:15px;
-  color:#f87171;
-  text-align:center
-}
-.dashboard{display:none}
-.card{
-  background:#111827;
-  border:1px solid #273449;
-  border-radius:18px;
-  padding:25px;
-  width:100%;
-  max-width:700px
-}
-.stat{
-  padding:20px;
-  margin-top:15px;
-  background:#0b1220;
-  border-radius:12px
-}
-.logout{background:#ef4444}
-</style>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, #202b63 0%, #0b0f1d 45%, #05070d 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 430px;
+    }
+
+    .card {
+      background: rgba(15, 20, 38, 0.92);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 26px;
+      padding: 38px 28px;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.45);
+      backdrop-filter: blur(15px);
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 22px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #5865f2, #7c5cff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      box-shadow: 0 12px 35px rgba(88,101,242,0.35);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 30px;
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #9299b5;
+      margin-top: 8px;
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+
+    label {
+      display: block;
+      color: #cbd0e5;
+      font-size: 14px;
+      margin-bottom: 9px;
+      font-weight: 600;
+    }
+
+    .input-box {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+      padding: 17px 50px 17px 17px;
+      border-radius: 14px;
+      border: 1px solid #303750;
+      outline: none;
+      background: #090d18;
+      color: white;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #5865f2;
+      box-shadow: 0 0 0 3px rgba(88,101,242,0.15);
+    }
+
+    .toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: none;
+      color: #8e96b3;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    button.login {
+      width: 100%;
+      margin-top: 22px;
+      padding: 17px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #5865f2, #6f5cff);
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button.login:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+
+    button.login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 13px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .error {
+      display: block;
+      background: rgba(239,68,68,0.12);
+      color: #ff8b8b;
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+
+    .success {
+      display: block;
+      background: rgba(34,197,94,0.12);
+      color: #72e6a0;
+      border: 1px solid rgba(34,197,94,0.2);
+    }
+
+    .dashboard {
+      display: none;
+    }
+
+    .welcome {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .welcome h2 {
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #9299b5;
+    }
+
+    .admin-box {
+      background: #090d18;
+      border: 1px solid #272d42;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+    }
+
+    .admin-box strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .admin-box span {
+      color: #8f97b4;
+      font-size: 14px;
+    }
+
+    .logout {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 13px;
+      border: 1px solid #303750;
+      background: transparent;
+      color: #cbd0e5;
+      cursor: pointer;
+    }
+
+    .footer {
+      text-align: center;
+      color: #636b86;
+      font-size: 12px;
+      margin-top: 22px;
+    }
+
+    .loading {
+      display: none;
+      margin-left: 6px;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="box" id="loginBox">
-  <h1>RISE NETWORK</h1>
-  <p>Admin Panel</p>
+  <div class="container">
 
-  <input
-    type="password"
-    id="password"
-    placeholder="Admin Password"
-  >
+    <!-- LOGIN -->
+    <div class="card" id="loginCard">
 
-  <button onclick="login()">LOGIN</button>
+      <div class="logo">R</div>
 
-  <div id="msg"></div>
-</div>
+      <h1>RISE NETWORK</h1>
+      <p class="subtitle">Secure Admin Panel</p>
 
-<div class="dashboard" id="dashboard">
-  <div class="card">
-    <h1>RISE NETWORK</h1>
-    <p>Admin Dashboard</p>
+      <label for="password">Admin Password</label>
 
-    <div class="stat">
-      <h2>🛠️ Admin Panel</h2>
-      <p>You are successfully logged in.</p>
+      <div class="input-box">
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+        >
+
+        <button class="toggle" type="button" onclick="togglePassword()">
+          👁
+        </button>
+      </div>
+
+      <button class="login" id="loginButton" onclick="login()">
+        LOGIN
+        <span class="loading" id="loading">...</span>
+      </button>
+
+      <div class="message" id="message"></div>
+
+      <div class="footer">
+        RISE NETWORK • Admin Access
+      </div>
+
     </div>
 
-    <div class="stat">
-      <h3>Server</h3>
-      <p>risesmp.online</p>
+
+    <!-- DASHBOARD -->
+    <div class="card dashboard" id="dashboard">
+
+      <div class="welcome">
+        <div class="logo">R</div>
+        <h2>Welcome, Admin 👋</h2>
+        <p>RISE NETWORK control panel</p>
+      </div>
+
+      <div class="admin-box">
+        <strong>🟢 Authentication</strong>
+        <span>Admin login verified successfully.</span>
+      </div>
+
+      <div class="admin-box">
+        <strong>🌐 Website</strong>
+        <span>RISE NETWORK website is connected.</span>
+      </div>
+
+      <div class="admin-box">
+        <strong>🗄️ Database</strong>
+        <span>D1 database binding detected.</span>
+      </div>
+
+      <button class="logout" onclick="logout()">
+        LOG OUT
+      </button>
+
     </div>
 
-    <div class="stat">
-      <h3>Gamemodes</h3>
-      <p>Survival SMP • BedWars</p>
-    </div>
-
-    <button class="logout" onclick="logout()">LOGOUT</button>
   </div>
-</div>
 
-<script>
-async function login(){
 
-  const password =
-    document.getElementById("password").value;
+  <script>
 
-  if(!password){
-    document.getElementById("msg").textContent =
-      "Enter your password";
-    return;
-  }
+    function togglePassword() {
+      const input = document.getElementById("password");
 
-  try{
-
-    const response = await fetch("/api/admin/login",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({password})
-    });
-
-    const data = await response.json();
-
-    if(data.success){
-
-      sessionStorage.setItem("riseAdmin","true");
-
-      document.getElementById("loginBox").style.display="none";
-      document.getElementById("dashboard").style.display="block";
-
-    }else{
-
-      document.getElementById("msg").textContent =
-        "Wrong password!";
+      if (input.type === "password") {
+        input.type = "text";
+      } else {
+        input.type = "password";
+      }
     }
 
-  }catch(error){
 
-    document.getElementById("msg").textContent =
-      "Server connection error!";
-  }
-}
+    async function login() {
 
-function logout(){
-  sessionStorage.removeItem("riseAdmin");
-  location.reload();
-}
+      const passwordInput = document.getElementById("password");
+      const button = document.getElementById("loginButton");
+      const loading = document.getElementById("loading");
+      const message = document.getElementById("message");
 
-if(sessionStorage.getItem("riseAdmin")==="true"){
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("dashboard").style.display="block";
-}
-</script>
+      const password = passwordInput.value;
+
+      message.className = "message";
+      message.textContent = "";
+
+      if (!password) {
+        message.textContent = "Please enter your password.";
+        message.classList.add("error");
+        return;
+      }
+
+      button.disabled = true;
+      loading.style.display = "inline";
+
+      try {
+
+        const response = await fetch("/api/admin/login", {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            password: password
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+
+          document.getElementById("loginCard").style.display = "none";
+          document.getElementById("dashboard").style.display = "block";
+
+          passwordInput.value = "";
+
+        } else {
+
+          message.textContent = data.message || "Wrong password.";
+          message.classList.add("error");
+
+        }
+
+      } catch (error) {
+
+        message.textContent =
+          "Server error. Please try again.";
+
+        message.classList.add("error");
+
+      }
+
+      button.disabled = false;
+      loading.style.display = "none";
+    }
+
+
+    function logout() {
+
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("loginCard").style.display = "block";
+
+    }
+
+
+    document.getElementById("password").addEventListener(
+      "keydown",
+      function(event) {
+
+        if (event.key === "Enter") {
+          login();
+        }
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
