@@ -188,87 +188,555 @@ button:disabled {
   </button>
 
 </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RISE NETWORK — Admin</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#080b14;
+  color:#fff;
+}
+.hidden{display:none!important}
+
+.login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.card{
+  background:#111827;
+  border:1px solid #29334a;
+  border-radius:22px;
+  padding:30px;
+  width:100%;
+  max-width:430px;
+}
+
+.logo{
+  width:70px;height:70px;
+  margin:0 auto 20px;
+  border-radius:20px;
+  background:#5865f2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  font-weight:900;
+}
+
+h1{text-align:center;margin:0}
+.sub{text-align:center;color:#9299b5;margin:8px 0 28px}
+
+input{
+  width:100%;
+  padding:14px;
+  margin-top:7px;
+  border-radius:11px;
+  border:1px solid #374151;
+  background:#080b14;
+  color:white;
+  outline:none;
+}
+
+button{
+  border:0;
+  border-radius:11px;
+  padding:13px 18px;
+  background:#5865f2;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.login button{
+  width:100%;
+  margin-top:16px;
+}
+
+#message{
+  text-align:center;
+  margin-top:14px;
+  color:#ff7b7b;
+}
+
+.panel{
+  max-width:1000px;
+  margin:auto;
+  padding:25px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.topbar h1{
+  text-align:left;
+}
+
+.logout{
+  background:#ef4444;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:18px;
+}
+
+.box{
+  background:#111827;
+  border:1px solid #29334a;
+  border-radius:18px;
+  padding:22px;
+}
+
+.box h2{
+  margin-top:0;
+}
+
+.player-form{
+  display:grid;
+  gap:10px;
+}
+
+.players{
+  margin-top:25px;
+}
+
+.player{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:15px;
+  margin-top:10px;
+  background:#080b14;
+  border:1px solid #29334a;
+  border-radius:13px;
+}
+
+.player-info strong{
+  display:block;
+}
+
+.player-info span{
+  color:#9299b5;
+  font-size:13px;
+}
+
+.delete{
+  background:#ef4444;
+  padding:9px 12px;
+}
+
+.empty{
+  color:#9299b5;
+  text-align:center;
+  padding:20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<section class="login" id="loginPage">
+
+  <div class="card">
+
+    <div class="logo">R</div>
+
+    <h1>RISE NETWORK</h1>
+    <div class="sub">Admin Panel</div>
+
+    <label>Password</label>
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Enter admin password"
+    >
+
+    <button onclick="login()">LOGIN</button>
+
+    <div id="message"></div>
+
+  </div>
+
+</section>
+
+
+<!-- DASHBOARD -->
+<section class="panel hidden" id="dashboard">
+
+  <div class="topbar">
+
+    <div>
+      <h1>RISE ADMIN</h1>
+      <div class="sub">Network Control Panel</div>
+    </div>
+
+    <button class="logout" onclick="logout()">
+      LOGOUT
+    </button>
+
+  </div>
+
+
+  <div class="grid">
+
+    <!-- ADD PLAYER -->
+    <div class="box">
+
+      <h2>➕ Add Player</h2>
+
+      <div class="player-form">
+
+        <input
+          id="playerName"
+          placeholder="Minecraft username"
+        >
+
+        <input
+          id="playerPoints"
+          type="number"
+          placeholder="Points"
+          value="0"
+        >
+
+        <input
+          id="playerWins"
+          type="number"
+          placeholder="Wins"
+          value="0"
+        >
+
+        <button onclick="addPlayer()">
+          ADD PLAYER
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- SERVER -->
+    <div class="box">
+
+      <h2>🟢 Server</h2>
+
+      <p>RISE NETWORK</p>
+
+      <p>
+        Java + Bedrock
+      </p>
+
+      <p>
+        risesmp.online
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- PLAYERS -->
+  <div class="box players">
+
+    <div style="display:flex;justify-content:space-between;align-items:center">
+
+      <h2>🏆 Players</h2>
+
+      <button onclick="loadPlayers()">
+        REFRESH
+      </button>
+
+    </div>
+
+    <div id="playerList">
+      <div class="empty">
+        Loading players...
+      </div>
+    </div>
+
+  </div>
+
+</section>
 
 
 <script>
 
-async function login() {
+let adminPassword = "";
+
+
+async function login(){
 
   const password =
     document.getElementById("password").value;
 
-  const button =
-    document.getElementById("loginButton");
-
   const message =
     document.getElementById("message");
 
-  message.textContent = "";
-
-  if (!password) {
-    message.textContent = "Enter your password.";
+  if(!password){
+    message.textContent =
+      "Enter your password.";
     return;
   }
 
-  button.disabled = true;
-  button.textContent = "CHECKING...";
+  try{
 
-  try {
-
-    const response = await fetch(
-      "/api/admin/login",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
+    const response =
+      await fetch("/api/admin/login",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
         },
-
-        body: JSON.stringify({
-          password: password
+        body:JSON.stringify({
+          password:password
         })
-      }
-    );
+      });
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
-    if (data.success) {
+    if(data.success){
 
-      document.getElementById("loginCard")
-        .style.display = "none";
+      adminPassword = password;
 
-      document.getElementById("dashboard")
-        .style.display = "block";
+      document
+        .getElementById("loginPage")
+        .classList.add("hidden");
 
-    } else {
+      document
+        .getElementById("dashboard")
+        .classList.remove("hidden");
 
-      message.textContent = "Wrong password.";
+      loadPlayers();
+
+    }else{
+
+      message.textContent =
+        "Wrong password.";
 
     }
 
-  } catch (error) {
+  }catch(error){
 
     message.textContent =
-      "Connection error. Try again.";
+      "Connection error.";
 
   }
 
-  button.disabled = false;
-  button.textContent = "LOGIN";
 }
 
 
-function logout() {
+async function loadPlayers(){
 
-  document.getElementById("dashboard")
-    .style.display = "none";
+  const list =
+    document.getElementById("playerList");
 
-  document.getElementById("loginCard")
-    .style.display = "block";
+  list.innerHTML =
+    '<div class="empty">Loading...</div>';
 
-  document.getElementById("password").value = "";
+  try{
+
+    const response =
+      await fetch("/api/admin/players",{
+        headers:{
+          "Authorization":
+            "Bearer " + adminPassword
+        }
+      });
+
+    if(!response.ok){
+
+      list.innerHTML =
+        '<div class="empty">Unable to load players.</div>';
+
+      return;
+    }
+
+    const players =
+      await response.json();
+
+    if(players.length === 0){
+
+      list.innerHTML =
+        '<div class="empty">No players yet.</div>';
+
+      return;
+    }
+
+    list.innerHTML =
+      players.map(player => `
+
+        <div class="player">
+
+          <div class="player-info">
+
+            <strong>${escapeHTML(player.name)}</strong>
+
+            <span>
+              ${player.points} Points •
+              ${player.wins} Wins
+            </span>
+
+          </div>
+
+          <button
+            class="delete"
+            onclick="deletePlayer(${player.id})"
+          >
+            DELETE
+          </button>
+
+        </div>
+
+      `).join("");
+
+  }catch(error){
+
+    list.innerHTML =
+      '<div class="empty">Connection error.</div>';
+
+  }
 
 }
+
+
+async function addPlayer(){
+
+  const name =
+    document.getElementById("playerName").value.trim();
+
+  const points =
+    Number(document.getElementById("playerPoints").value || 0);
+
+  const wins =
+    Number(document.getElementById("playerWins").value || 0);
+
+  if(!name){
+    alert("Enter player name.");
+    return;
+  }
+
+  const response =
+    await fetch("/api/admin/players",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":
+          "Bearer " + adminPassword
+      },
+      body:JSON.stringify({
+        name:name,
+        points:points,
+        wins:wins
+      })
+    });
+
+  const data =
+    await response.json();
+
+  if(data.success){
+
+    document.getElementById("playerName").value="";
+    document.getElementById("playerPoints").value="0";
+    document.getElementById("playerWins").value="0";
+
+    loadPlayers();
+
+  }else{
+
+    alert(data.error || "Failed to add player.");
+
+  }
+
+}
+
+
+async function deletePlayer(id){
+
+  if(!confirm("Delete this player?")){
+    return;
+  }
+
+  const response =
+    await fetch(
+      "/api/admin/players/" + id,
+      {
+        method:"DELETE",
+        headers:{
+          "Authorization":
+            "Bearer " + adminPassword
+        }
+      }
+    );
+
+  const data =
+    await response.json();
+
+  if(data.success){
+    loadPlayers();
+  }else{
+    alert("Failed to delete player.");
+  }
+
+}
+
+
+function logout(){
+
+  adminPassword = "";
+
+  document
+    .getElementById("dashboard")
+    .classList.add("hidden");
+
+  document
+    .getElementById("loginPage")
+    .classList.remove("hidden");
+
+  document.getElementById("password").value="";
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+document
+  .getElementById("password")
+  .addEventListener("keydown",function(e){
+
+    if(e.key === "Enter"){
+      login();
+    }
+
+  });
 
 </script>
 
