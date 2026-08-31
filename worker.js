@@ -19,11 +19,24 @@ export default {
       );
     }
 
+    // Check admin authentication
+    function isAdmin(request) {
+      const auth = request.headers.get("Authorization");
+      return auth === `Bearer ${env.ADMIN_PASSWORD}`;
+    }
+
     // GET PLAYERS
     if (
       url.pathname === "/api/admin/players" &&
       request.method === "GET"
     ) {
+      if (!isAdmin(request)) {
+        return Response.json(
+          { error: "Unauthorized" },
+          { status: 401 }
+        );
+      }
+
       const result = await env.DB
         .prepare(
           "SELECT * FROM players ORDER BY points DESC"
@@ -38,6 +51,13 @@ export default {
       url.pathname === "/api/admin/players" &&
       request.method === "POST"
     ) {
+      if (!isAdmin(request)) {
+        return Response.json(
+          { error: "Unauthorized" },
+          { status: 401 }
+        );
+      }
+
       const data = await request.json();
 
       if (!data.name) {
@@ -68,6 +88,13 @@ export default {
       url.pathname.startsWith("/api/admin/players/") &&
       request.method === "DELETE"
     ) {
+      if (!isAdmin(request)) {
+        return Response.json(
+          { error: "Unauthorized" },
+          { status: 401 }
+        );
+      }
+
       const id = url.pathname.split("/").pop();
 
       await env.DB
