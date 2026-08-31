@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,12 +7,14 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
   background:#080b14;
   color:#fff;
 }
+
 .hidden{display:none!important}
 
 .login{
@@ -29,11 +31,12 @@ body{
   border-radius:22px;
   padding:30px;
   width:100%;
-  max-width:430px;
+  max-width:450px;
 }
 
 .logo{
-  width:70px;height:70px;
+  width:70px;
+  height:70px;
   margin:0 auto 20px;
   border-radius:20px;
   background:#5865f2;
@@ -44,10 +47,19 @@ body{
   font-weight:900;
 }
 
-h1{text-align:center;margin:0}
-.sub{text-align:center;color:#9299b5;margin:8px 0 28px}
+h1{
+  text-align:center;
+  margin:0;
+}
 
-input{
+.sub{
+  text-align:center;
+  color:#9299b5;
+  margin:8px 0 28px;
+}
+
+input,
+textarea{
   width:100%;
   padding:14px;
   margin-top:7px;
@@ -56,6 +68,12 @@ input{
   background:#080b14;
   color:white;
   outline:none;
+  font-size:15px;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
 }
 
 button{
@@ -103,7 +121,7 @@ button{
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  grid-template-columns:1fr;
   gap:18px;
 }
 
@@ -118,39 +136,32 @@ button{
   margin-top:0;
 }
 
-.player-form{
-  display:grid;
-  gap:10px;
-}
-
-.players{
-  margin-top:25px;
-}
-
-.player{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  padding:15px;
-  margin-top:10px;
+.announcement{
   background:#080b14;
   border:1px solid #29334a;
-  border-radius:13px;
+  border-radius:14px;
+  padding:18px;
+  margin-top:12px;
 }
 
-.player-info strong{
-  display:block;
+.announcement h3{
+  margin:0 0 8px;
 }
 
-.player-info span{
-  color:#9299b5;
-  font-size:13px;
+.announcement p{
+  color:#cbd5e1;
+  white-space:pre-wrap;
+  margin:0 0 12px;
+}
+
+.date{
+  color:#7f8aa3;
+  font-size:12px;
 }
 
 .delete{
   background:#ef4444;
-  padding:9px 12px;
+  margin-top:12px;
 }
 
 .empty{
@@ -171,7 +182,10 @@ button{
     <div class="logo">R</div>
 
     <h1>RISE NETWORK</h1>
-    <div class="sub">Admin Panel</div>
+
+    <div class="sub">
+      Admin Panel
+    </div>
 
     <label>Password</label>
 
@@ -181,7 +195,9 @@ button{
       placeholder="Enter admin password"
     >
 
-    <button onclick="login()">LOGIN</button>
+    <button onclick="login()">
+      LOGIN
+    </button>
 
     <div id="message"></div>
 
@@ -197,10 +213,15 @@ button{
 
     <div>
       <h1>RISE ADMIN</h1>
-      <div class="sub">Network Control Panel</div>
+      <div class="sub">
+        Network Control Panel
+      </div>
     </div>
 
-    <button class="logout" onclick="logout()">
+    <button
+      class="logout"
+      onclick="logout()"
+    >
       LOGOUT
     </button>
 
@@ -209,78 +230,61 @@ button{
 
   <div class="grid">
 
-    <!-- ADD PLAYER -->
+    <!-- CREATE ANNOUNCEMENT -->
     <div class="box">
 
-      <h2>➕ Add Player</h2>
+      <h2>📢 Create Announcement</h2>
 
-      <div class="player-form">
+      <label>Title</label>
 
-        <input
-          id="playerName"
-          placeholder="Minecraft username"
-        >
+      <input
+        id="announcementTitle"
+        placeholder="Announcement title"
+      >
 
-        <input
-          id="playerPoints"
-          type="number"
-          placeholder="Points"
-          value="0"
-        >
+      <label>Message</label>
 
-        <input
-          id="playerWins"
-          type="number"
-          placeholder="Wins"
-          value="0"
-        >
+      <textarea
+        id="announcementMessage"
+        placeholder="Write your announcement..."
+      ></textarea>
 
-        <button onclick="addPlayer()">
-          ADD PLAYER
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- SERVER -->
-    <div class="box">
-
-      <h2>🟢 Server</h2>
-
-      <p>RISE NETWORK</p>
-
-      <p>
-        Java + Bedrock
-      </p>
-
-      <p>
-        risesmp.online
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <!-- PLAYERS -->
-  <div class="box players">
-
-    <div style="display:flex;justify-content:space-between;align-items:center">
-
-      <h2>🏆 Players</h2>
-
-      <button onclick="loadPlayers()">
-        REFRESH
+      <button
+        onclick="addAnnouncement()"
+        style="margin-top:15px"
+      >
+        PUBLISH ANNOUNCEMENT
       </button>
 
     </div>
 
-    <div id="playerList">
-      <div class="empty">
-        Loading players...
+
+    <!-- ANNOUNCEMENTS -->
+    <div class="box">
+
+      <div
+        style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+        "
+      >
+
+        <h2>📢 Published Announcements</h2>
+
+        <button onclick="loadAnnouncements()">
+          REFRESH
+        </button>
+
       </div>
+
+      <div id="announcementList">
+        <div class="empty">
+          Loading...
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -293,6 +297,10 @@ button{
 let adminPassword = "";
 
 
+/* =========================
+   LOGIN
+========================= */
+
 async function login(){
 
   const password =
@@ -302,23 +310,31 @@ async function login(){
     document.getElementById("message");
 
   if(!password){
+
     message.textContent =
       "Enter your password.";
+
     return;
   }
 
   try{
 
     const response =
-      await fetch("/api/admin/login",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-          password:password
-        })
-      });
+      await fetch(
+        "/api/admin/login",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            password:password
+          })
+        }
+      );
 
     const data =
       await response.json();
@@ -335,7 +351,7 @@ async function login(){
         .getElementById("dashboard")
         .classList.remove("hidden");
 
-      loadPlayers();
+      loadAnnouncements();
 
     }else{
 
@@ -354,10 +370,16 @@ async function login(){
 }
 
 
-async function loadPlayers(){
+/* =========================
+   LOAD ANNOUNCEMENTS
+========================= */
+
+async function loadAnnouncements(){
 
   const list =
-    document.getElementById("playerList");
+    document.getElementById(
+      "announcementList"
+    );
 
   list.innerHTML =
     '<div class="empty">Loading...</div>';
@@ -365,149 +387,226 @@ async function loadPlayers(){
   try{
 
     const response =
-      await fetch("/api/admin/players",{
-        headers:{
-          "Authorization":
-            "Bearer " + adminPassword
-        }
-      });
+      await fetch(
+        "/api/announcements"
+      );
 
-    if(!response.ok){
-
-      list.innerHTML =
-        '<div class="empty">Unable to load players.</div>';
-
-      return;
-    }
-
-    const players =
+    const announcements =
       await response.json();
 
-    if(players.length === 0){
+    if(
+      !Array.isArray(announcements) ||
+      announcements.length === 0
+    ){
 
       list.innerHTML =
-        '<div class="empty">No players yet.</div>';
+        '<div class="empty">No announcements yet.</div>';
 
       return;
     }
 
     list.innerHTML =
-      players.map(player => `
+      announcements
+      .map(item => `
 
-        <div class="player">
+        <div class="announcement">
 
-          <div class="player-info">
+          <h3>
+            ${escapeHTML(item.title)}
+          </h3>
 
-            <strong>${escapeHTML(player.name)}</strong>
+          <p>
+            ${escapeHTML(item.message)}
+          </p>
 
-            <span>
-              ${player.points} Points •
-              ${player.wins} Wins
-            </span>
-
+          <div class="date">
+            ${escapeHTML(item.created_at || "")}
           </div>
 
           <button
             class="delete"
-            onclick="deletePlayer(${player.id})"
+            onclick="deleteAnnouncement(${item.id})"
           >
             DELETE
           </button>
 
         </div>
 
-      `).join("");
+      `)
+      .join("");
 
   }catch(error){
 
     list.innerHTML =
-      '<div class="empty">Connection error.</div>';
+      '<div class="empty">Failed to load announcements.</div>';
 
   }
 
 }
 
 
-async function addPlayer(){
+/* =========================
+   ADD ANNOUNCEMENT
+========================= */
 
-  const name =
-    document.getElementById("playerName").value.trim();
+async function addAnnouncement(){
 
-  const points =
-    Number(document.getElementById("playerPoints").value || 0);
+  const title =
+    document
+      .getElementById(
+        "announcementTitle"
+      )
+      .value
+      .trim();
 
-  const wins =
-    Number(document.getElementById("playerWins").value || 0);
+  const message =
+    document
+      .getElementById(
+        "announcementMessage"
+      )
+      .value
+      .trim();
 
-  if(!name){
-    alert("Enter player name.");
+  if(!title){
+
+    alert("Enter announcement title.");
+
     return;
   }
 
-  const response =
-    await fetch("/api/admin/players",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":
-          "Bearer " + adminPassword
-      },
-      body:JSON.stringify({
-        name:name,
-        points:points,
-        wins:wins
-      })
-    });
+  if(!message){
 
-  const data =
-    await response.json();
+    alert("Enter announcement message.");
 
-  if(data.success){
-
-    document.getElementById("playerName").value="";
-    document.getElementById("playerPoints").value="0";
-    document.getElementById("playerWins").value="0";
-
-    loadPlayers();
-
-  }else{
-
-    alert(data.error || "Failed to add player.");
-
-  }
-
-}
-
-
-async function deletePlayer(id){
-
-  if(!confirm("Delete this player?")){
     return;
   }
 
-  const response =
-    await fetch(
-      "/api/admin/players/" + id,
-      {
-        method:"DELETE",
-        headers:{
-          "Authorization":
-            "Bearer " + adminPassword
+  try{
+
+    const response =
+      await fetch(
+        "/api/admin/announcements",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json",
+
+            "Authorization":
+              "Bearer " + adminPassword
+          },
+
+          body:JSON.stringify({
+            title:title,
+            message:message
+          })
         }
-      }
+      );
+
+    const data =
+      await response.json();
+
+    if(data.success){
+
+      document
+        .getElementById(
+          "announcementTitle"
+        )
+        .value = "";
+
+      document
+        .getElementById(
+          "announcementMessage"
+        )
+        .value = "";
+
+      loadAnnouncements();
+
+      alert(
+        "Announcement published!"
+      );
+
+    }else{
+
+      alert(
+        data.error ||
+        "Failed to publish."
+      );
+
+    }
+
+  }catch(error){
+
+    alert(
+      "Connection error."
     );
 
-  const data =
-    await response.json();
-
-  if(data.success){
-    loadPlayers();
-  }else{
-    alert("Failed to delete player.");
   }
 
 }
 
+
+/* =========================
+   DELETE ANNOUNCEMENT
+========================= */
+
+async function deleteAnnouncement(id){
+
+  if(
+    !confirm(
+      "Delete this announcement?"
+    )
+  ){
+
+    return;
+  }
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/admin/announcements/" + id,
+        {
+          method:"DELETE",
+
+          headers:{
+            "Authorization":
+              "Bearer " + adminPassword
+          }
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if(data.success){
+
+      loadAnnouncements();
+
+    }else{
+
+      alert(
+        data.error ||
+        "Failed to delete."
+      );
+
+    }
+
+  }catch(error){
+
+    alert(
+      "Connection error."
+    );
+
+  }
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
 
 function logout(){
 
@@ -521,10 +620,16 @@ function logout(){
     .getElementById("loginPage")
     .classList.remove("hidden");
 
-  document.getElementById("password").value="";
+  document
+    .getElementById("password")
+    .value = "";
 
 }
 
+
+/* =========================
+   HTML SAFETY
+========================= */
 
 function escapeHTML(value){
 
@@ -538,15 +643,20 @@ function escapeHTML(value){
 }
 
 
+/* ENTER KEY */
+
 document
   .getElementById("password")
-  .addEventListener("keydown",function(e){
+  .addEventListener(
+    "keydown",
+    function(e){
 
-    if(e.key === "Enter"){
-      login();
+      if(e.key === "Enter"){
+        login();
+      }
+
     }
-
-  });
+  );
 
 </script>
 
